@@ -1,0 +1,10 @@
+# Ignore virtual environment
+
+venv/
+.venv/
+env/
+
+# Ignore Python cache
+
+**pycache**/
+*.pyc
