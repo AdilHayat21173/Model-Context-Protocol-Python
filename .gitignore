@@ -1,10 +1,28 @@
-# Ignore virtual environment
+# Environment Variables (Keep these out of GitHub!)
+.env
+.env.local
 
+# Virtual Environments
 venv/
 .venv/
 env/
+ENV/
+bin/
+lib/
+include/
 
-# Ignore Python cache
+# Python Cache & Compiled Files
+**/__pycache__/
+*.py[cod]
+*$py.class
 
-**pycache**/
-*.pyc
+# Distribution / Build
+dist/
+build/
+*.egg-info/
+
+# Editor / OS Specific
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
