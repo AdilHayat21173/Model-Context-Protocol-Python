@@ -1,33 +1,55 @@
 # Project Title
-# =============
-## MCP Project with Groq Integration
+MCP and Groq Tool Integration
+## Project Description
+This project provides two independent scripts: one for MCP and Groq tool integration with web search functionality, and another for MCP filesystem reading and README generation using Groq.
 
-# Description
-# ===========
-This project utilizes the Model Context Protocol (MCP) to interact with remote tools and services, while leveraging the capabilities of Groq for AI-powered decision-making and task automation. The project aims to demonstrate the potential of combining MCP and Groq to create a powerful and flexible framework for various applications.
+## Project Overview
+This project contains two main files: `main.py` and `client.py`. 
+- `main.py` is responsible for MCP integration, Groq tool calling, and web search agent functionality.
+- `client.py` handles MCP filesystem reading and generates README files using Groq.
 
-# Features
-# =========
-* **MCP Integration**: The project uses MCP to connect to remote tools and services, enabling seamless interaction and data exchange.
-* **Groq AI**: Groq's AI capabilities are utilized to analyze data, make decisions, and automate tasks, enhancing the overall functionality of the project.
-* **Tool Execution**: The project can execute various tools and services via MCP, with Groq determining the optimal tool to use based on the input and context.
-* **Streaming Response**: The project demonstrates a streaming response mechanism, allowing for real-time output and feedback.
+These files work independently of each other.
 
-# Installation
-# =============
-To install and run this project, follow these steps:
-1. **Install Required Packages**: Install the necessary packages, including `groq`, `mcp`, and `dotenv`, using pip: `pip install groq mcp dotenv`.
-2. **Set Environment Variables**: Set the required environment variables, such as `GROQ_API_KEY`, in a `.env` file.
-3. **Run the Project**: Execute the project using Python: `python main.py`.
+## Execution Flow
+1. When `main.py` is run, it executes MCP integration, calls the Groq tool, and performs web search operations.
+2. When `client.py` is run, it reads the MCP filesystem and generates README files using Groq.
 
-# Usage
-# ======
-To use this project, simply run the `main.py` file and follow the prompts. The project will guide you through the process of connecting to remote tools and services, executing tasks, and generating output.
+## File-by-File Breakdown
+### main.py
+- Purpose: Integrate MCP, call Groq tool, and perform web search.
+- Main functions: MCP integration, Groq tool calling, web search.
+- Behavior: Runs independently to execute MCP, Groq, and web search operations.
 
-# Project Structure
-# ==================
-The project consists of the following files and directories:
-* `client.py`: Contains the MCP client code, responsible for interacting with remote tools and services.
-* `main.py`: The main entry point of the project, which sets up the Groq client, initializes the MCP session, and executes the tools and services.
-* `README.md`: This file, which provides an overview of the project, its features, and usage instructions.
-* `.env`: A file containing environment variables, such as the Groq API key.
+### client.py
+- Purpose: Read MCP filesystem and generate README using Groq.
+- Main functions: MCP filesystem reading, README generation using Groq.
+- Behavior: Runs independently to read MCP filesystem and generate README files.
+
+## Features
+* MCP filesystem usage
+* Groq LLM usage
+* Web search tool
+* README generation
+
+## Technologies Used
+* Python
+* Groq API
+* MCP
+* asyncio
+
+## Installation
+1. Install Python and required dependencies.
+2. Set up Groq API and MCP.
+
+## Usage
+1. Run `main.py` to execute MCP integration, Groq tool calling, and web search.
+2. Run `client.py` to read MCP filesystem and generate README files using Groq.
+
+## Project Structure
+```markdown
+project/
+├── main.py
+├── client.py
+├── README.md
+├── .env
+```

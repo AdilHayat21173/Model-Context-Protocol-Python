@@ -94,22 +94,103 @@ async def generate_readme(project_folder):
             # GROQ PROMPT
             # -----------------------------
             prompt = f"""
-You are a senior software engineer.
+You are a senior software engineer writing professional GitHub documentation.
 
-Generate a professional README.md for this project.
+STRICT RULES:
+- Only use information that is explicitly present in the code.
+- Do NOT assume, invent, or hallucinate any features, files, or architecture.
+- If something is not in the code, do NOT mention it.
 
-Include:
-- Title
-- Description
-- Features
-- Installation
-- Usage
-- Project Structure
+---
 
-Return ONLY markdown.
+# TASK
+Generate a professional README.md for the project.
 
-CODE:
-{all_code}
+---
+
+# REQUIRED SECTIONS
+
+## 1. Project Title
+Derive from actual code context only.
+
+## 2. Project Description
+Explain exactly what the code does.
+
+## 3. Project Overview (VERY IMPORTANT)
+This project contains ONLY:
+- main.py
+- client.py
+
+Explain each file’s real responsibility:
+- main.py → MCP + Groq tool calling + web search agent
+- client.py → MCP filesystem reader + README generator using Groq
+
+Explain how they work independently (NOT a combined system unless explicitly connected in code).
+
+---
+
+## 4. Execution Flow (REAL FLOW ONLY)
+Describe step-by-step execution based on actual logic:
+- What main.py does when run
+- What client.py does when run
+- Do NOT merge them into one pipeline unless code connects them
+
+---
+
+## 5. File-by-File Breakdown
+Explain each file:
+- Purpose
+- Main functions
+- Real behavior only
+
+---
+
+## 6. Features (FROM CODE ONLY)
+List only what exists:
+- MCP filesystem usage
+- Groq LLM usage
+- Web search tool (if present in code)
+- README generation (client.py)
+
+---
+
+## 7. Technologies Used
+Only actual dependencies:
+- Python
+- Groq API
+- MCP
+- asyncio
+
+---
+
+## 8. Installation
+Simple and realistic setup steps.
+
+---
+
+## 9. Usage
+Explain:
+- how to run main.py
+- how to run client.py
+
+---
+
+## 10. Project Structure
+Only real files:
+
+project/
+├── main.py
+├── client.py
+├── README.md
+├── .env
+
+---
+
+# OUTPUT RULES
+- Return ONLY markdown
+- No extra explanation
+- No assumptions
+- No invented components
 """
 
             response = client.chat.completions.create(
