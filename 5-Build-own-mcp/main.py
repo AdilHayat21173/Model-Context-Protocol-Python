@@ -1,6 +1,7 @@
 from job_analyzer import extract_job_requirements, suggest_cv_updates
 from content import cv_data
 from docx_updater import update_cv_docx
+from email_generator import generate_application_email, print_email, save_email
 from pathlib import Path
 
 # ==============================
@@ -86,3 +87,20 @@ updated_file = update_cv_docx(
 )
 
 print(f"\nDone! Updated CV saved to: {updated_file}")
+
+# ==============================
+# STEP 4: Generate Application Email
+# ==============================
+
+print("\n" + "=" * 50)
+print("STEP 4: GENERATING APPLICATION EMAIL")
+print("=" * 50)
+
+email = generate_application_email(cv_data, job_description)
+
+# Print to console
+print_email(email)
+
+# Save to file
+email_output_path = base_dir / "application_email.txt"
+save_email(email, output_path=str(email_output_path))
