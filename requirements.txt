@@ -3,3 +3,4 @@ python-dotenv
 ipykernel
 httpx
 groq 
+python-docx
