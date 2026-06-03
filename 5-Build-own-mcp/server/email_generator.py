@@ -8,29 +8,42 @@ from llm import ask_llm
 def generate_application_email(cv_data: dict, job_description: str) -> dict:
     """
     Takes cv_data (from content.py) and a job description string.
-    Returns a dict with:
-        - subject   : email subject line
-        - body      : full email body
+    Returns:
+        {
+            "subject": "...",
+            "body": "..."
+        }
     """
 
     prompt = f"""
-You are a professional career coach and email writer.
+You are a professional job application email writer.
 
-Write a job application email based on the CV and job description below.
+Write a simple and natural job application email based on the CV and job description.
 
-Instructions:
-- Tone: Professional, confident, and enthusiastic
-- Length: Medium (not too short, not too long — 4 to 5 paragraphs)
-- Do NOT use generic filler phrases like "I hope this email finds you well"
-- Do NOT repeat the entire CV — highlight only the most relevant skills and projects
-- Mention 2–3 specific projects or achievements from the CV that match the job
-- End with a clear call to action (e.g. request for interview)
-- Output ONLY two things, clearly separated:
+Very important rules:
+- Do NOT write long paragraphs
+- Do NOT use phrases like "seasoned", "proven track record", "cutting-edge", "align perfectly"
+- Do NOT overpraise the candidate
+- Do NOT mention too many projects
+- Mention only 1 or 2 relevant skills/projects
+- Keep the email short and human-like
+- Maximum 180 words
+- Use simple English
+- Start exactly with: Hello,
+- Mention the job title
+- Mention company name only if available
+- Mention that the CV/resume is attached
+- End exactly like this:
 
-SUBJECT: <your subject line here>
+Thanks,
+{cv_data.get('name', 'Adil Hayat')}
+
+Output ONLY in this format:
+
+SUBJECT: <subject line>
 
 BODY:
-<your email body here>
+<email body>
 
 CV:
 {cv_data['full_text']}
@@ -40,6 +53,7 @@ Job Description:
 """
 
     response = ask_llm(prompt)
+
     return parse_email(response)
 
 
@@ -50,11 +64,13 @@ Job Description:
 def parse_email(response: str) -> dict:
     """
     Parse the LLM response into subject and body.
-    Expected format:
-        SUBJECT: ...
 
-        BODY:
-        ...
+    Expected format:
+
+    SUBJECT: ...
+
+    BODY:
+    ...
     """
 
     subject = ""
@@ -64,18 +80,20 @@ def parse_email(response: str) -> dict:
     for line in response.splitlines():
         stripped = line.strip()
 
-        # Extract subject line
+        # Extract subject
         if stripped.upper().startswith("SUBJECT:"):
             subject = stripped[len("SUBJECT:"):].strip()
             continue
 
-        # Start collecting body
+        # Start body parsing
         if stripped.upper().startswith("BODY:"):
             in_body = True
-            # Grab anything after "BODY:" on the same line
+
+            # Capture inline content after BODY:
             after = stripped[len("BODY:"):].strip()
             if after:
                 body_lines.append(after)
+
             continue
 
         if in_body:
@@ -83,11 +101,12 @@ def parse_email(response: str) -> dict:
 
     body = "\n".join(body_lines).strip()
 
-    # Fallback: if parsing failed, return full response as body
-    if not body:
-        body = response.strip()
+    # Fallbacks
     if not subject:
         subject = "Application for AI/ML Engineer Position"
+
+    if not body:
+        body = response.strip()
 
     return {
         "subject": subject,
@@ -96,30 +115,40 @@ def parse_email(response: str) -> dict:
 
 
 # ==============================
-# SAVE EMAIL TO .TXT FILE
+# SAVE EMAIL TO FILE
 # ==============================
 
 def save_email(email: dict, output_path: str = "application_email.txt"):
     """
-    Save the generated email to a .txt file.
+    Save generated email to a text file.
     """
+
     with open(output_path, "w", encoding="utf-8") as f:
         f.write(f"SUBJECT: {email['subject']}\n")
         f.write("=" * 60 + "\n\n")
         f.write(email["body"])
 
-    print(f"\nEmail saved to: {output_path}")
+    print(f"\n✅ Email saved to: {output_path}")
 
 
 # ==============================
-# PRINT EMAIL TO CONSOLE
+# PRINT EMAIL
 # ==============================
 
 def print_email(email: dict):
+    """
+    Print formatted email in console.
+    """
+
     print("\n" + "=" * 60)
     print("GENERATED APPLICATION EMAIL")
     print("=" * 60)
+
     print(f"\nSUBJECT: {email['subject']}\n")
+
     print("-" * 60)
+
     print(email["body"])
-    print("=" * 60)
+
+    print("\n" + "=" * 60)
+
